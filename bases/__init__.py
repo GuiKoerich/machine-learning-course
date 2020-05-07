@@ -1,3 +1,3 @@
-from .credit_base import CreditTestBase
+from .credit_base import CreditBase
 
-__all__ = ['CreditTestBase']
+__all__ = ['CreditBase']
