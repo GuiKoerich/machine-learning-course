@@ -4,12 +4,14 @@ from sklearn.preprocessing import StandardScaler
 
 
 class PreProcessCredit:
-    __slots__ = ['__base', '__predictors', '__classes']
+    __slots__ = ['__base', '__predictors', '__classes', '__imputer']
 
     __base_name = 'credit_data.csv'
+    __scaler = StandardScaler()
 
     def __init__(self):
         self.__base = pd.read_csv(self.__base_name)
+        self.__imputer = SimpleImputer(strategy='mean', missing_values='NaN')
         self.__predictors()
         self.__classes()
         self.__treatment()
@@ -30,12 +32,11 @@ class PreProcessCredit:
         self.__base.loc[self.__base.age < 0, 'age'] = mean
 
     def __treatment_null_values(self):
-        imputer = SimpleImputer().fit(self.__predictors[:, 0:3])
-        self.__predictors[:, 0:3] = imputer.transform(self.__predictors[:, 0:3])
+        self.__imputer = self.__imputer.fit(self.__predictors[:, 1:4])
+        self.__predictors[:, 1:4] = self.__imputer.transform(self.__predictors[:, 1:4])
 
     def __scaling(self):
-        scaler = StandardScaler()
-        self.__predictors = scaler.fit_transform(self.__predictors)
+        self.__predictors = self.__scaler.fit_transform(self.__predictors)
 
     @property
     def base(self):
