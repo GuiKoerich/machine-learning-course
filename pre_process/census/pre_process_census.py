@@ -44,3 +44,11 @@ class PreProcessCensus:
 
     def __scaler_predictors(self):
         self.__predictors = self.__scaler.fit_transform(self.__predictors)
+
+    @property
+    def predictors(self):
+        return self.__predictors
+
+    @property
+    def classes(self):
+        return self.__classes

@@ -1,4 +1,5 @@
-import pandas as pd
+from pandas import read_csv
+from numpy import nan
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import StandardScaler
 
@@ -10,16 +11,16 @@ class PreProcessCredit:
     __scaler = StandardScaler()
 
     def __init__(self):
-        self.__base = pd.read_csv(self.__base_name)
-        self.__imputer = SimpleImputer(strategy='mean', missing_values='NaN')
-        self.__predictors()
-        self.__classes()
+        self.__base = read_csv(self.__base_name)
+        self.__imputer = SimpleImputer(strategy='mean', missing_values=nan)
+        self.__set_predictors()
+        self.__set_classes()
         self.__treatment()
 
-    def __predictors(self):
+    def __set_predictors(self):
         self.__predictors = self.__base.iloc[:, 1:4].values
 
-    def __classes(self):
+    def __set_classes(self):
         self.__classes = self.__base.iloc[:, 4].values
 
     def __treatment(self):
@@ -37,10 +38,6 @@ class PreProcessCredit:
 
     def __scaling(self):
         self.__predictors = self.__scaler.fit_transform(self.__predictors)
-
-    @property
-    def base(self):
-        return self.__base
 
     @property
     def predictors(self):
