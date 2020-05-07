@@ -1,3 +1,4 @@
-from pre_process.pre_process_credit_data import PreProcessCredit
+from .credit_data import PreProcessCredit
+from .census import PreProcessCensus
 
-__all__ = ['PreProcessCredit']
+__all__ = ['PreProcessCredit', 'PreProcessCensus']
