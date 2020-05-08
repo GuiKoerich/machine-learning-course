@@ -7,11 +7,11 @@ from sklearn.preprocessing import StandardScaler
 class PreProcessCredit:
     __slots__ = ['__base', '__predictors', '__classes', '__imputer']
 
-    __base_name = 'credit_data.csv'
+    __csv = '/home/guilherme/PycharmProjects/ia/pre_process/credit_data/credit_data.csv'
     __scaler = StandardScaler()
 
     def __init__(self):
-        self.__base = read_csv(self.__base_name)
+        self.__base = read_csv(self.__csv)
         self.__imputer = SimpleImputer(strategy='mean', missing_values=nan)
         self.__set_predictors()
         self.__set_classes()
