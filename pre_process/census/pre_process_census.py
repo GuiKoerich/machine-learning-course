@@ -13,18 +13,18 @@ class PreProcessCensus:
                                            remainder='passthrough')
     __scaler = StandardScaler()
 
-    def __init__(self):
+    def __init__(self, encoder=True, scaler=True, dummy=True):
         self.__base = read_csv(self.__csv)
         self.__get_predictors_and_classes()
-        self.__process()
+        self.__process(encoder, scaler, dummy)
 
     def __get_predictors_and_classes(self):
         self.__set_predictors()
         self.__set_classes()
 
-    def __process(self):
-        self.__encoder()
-        self.__scaler_predictors()
+    def __process(self, encoder, scaler, dummy):
+        self.__encoder(encoder, dummy)
+        self.__scaler_predictors(scaler)
 
     def __set_predictors(self):
         self.__predictors = self.__base.iloc[:, 0:14].values
@@ -32,18 +32,21 @@ class PreProcessCensus:
     def __set_classes(self):
         self.__classes = self.__base.iloc[:, 14].values
 
-    def __encoder(self):
-        self.__encoder_predictors()
-        self.__encoder_classes()
+    def __encoder(self, encoder, dummy):
+        self.__encoder_predictors(dummy)
+        self.__encoder_classes(encoder)
 
-    def __encoder_predictors(self):
-        self.__predictors = self.__predictors_dummy.fit_transform(self.__predictors).toarray()
+    def __encoder_predictors(self, dummy):
+        if dummy:
+            self.__predictors = self.__predictors_dummy.fit_transform(self.__predictors).toarray()
 
-    def __encoder_classes(self):
-        self.__classes = self.__label_encoder.fit_transform(self.__classes)
+    def __encoder_classes(self, encoder):
+        if encoder:
+            self.__classes = self.__label_encoder.fit_transform(self.__classes)
 
-    def __scaler_predictors(self):
-        self.__predictors = self.__scaler.fit_transform(self.__predictors)
+    def __scaler_predictors(self, scaler):
+        if scaler:
+            self.__predictors = self.__scaler.fit_transform(self.__predictors)
 
     @property
     def predictors(self):
@@ -52,8 +55,3 @@ class PreProcessCensus:
     @property
     def classes(self):
         return self.__classes
-
-
-if __name__ == '__main__':
-    a = PreProcessCensus()
-    a.predictors
