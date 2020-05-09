@@ -16,4 +16,4 @@ class RandomForestCredit(RandomForest):
 
 
 if __name__ == '__main__':
-    RandomForestCredit(trees=10).test_base()
+    RandomForestCredit(trees=15).test_base()
